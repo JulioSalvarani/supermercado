@@ -1,0 +1,11 @@
+spring:
+  application:
+    name: supermercado
+  server:
+    error:
+      include-message: always
+  datasource:
+    url: jdbc:sqlserver://localhost:1433;databaseName=supermercado;encrypt=true;trustServerCertificate=true
+    username: sa
+    password: Tudonolow25
+    driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
