@@ -6,6 +6,7 @@ import lombok.Builder;
 
 import java.time.LocalDate;
 @Builder
+
 public record SalvarProdutoRequest(@NotBlank
                                    String descricao,
                                    @NotBlank

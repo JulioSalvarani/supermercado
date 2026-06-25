@@ -7,6 +7,7 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 import java.sql.*;
+import java.time.LocalDate;
 import java.util.List;
 
 @Repository
@@ -17,7 +18,8 @@ public class ProdutoRepository {
     private static final String BUSCAR_POR_ID = "SELECT * FROM produto WHERE id = ?";
 
     private static final String VALIDA_ID = "SELECT COUNT (*) FROM produto WHERE id = ?";
-
+    private static final String APAGA_ID = "DELETE FROM PRODUTO WHERE id = ?";
+    private static final String ALTERA_POR_ID = "UPDATE produto SET descricao = ?, lote = ?, dataValidade = ?, dataCriacao = ? WHERE id = ?";
     private Produto rowMapperProduto(ResultSet rs) throws SQLException {
         return Produto.builder()
                 .id(rs.getLong("id"))
@@ -67,9 +69,50 @@ public class ProdutoRepository {
         return itemBusca;        
     }
 
-    public Produto alterarPorId(Long id){
+    public Produto apagaId(Long id){
         Produto produtoSelecionado = buscarPorId(id);
-        return produtoSelecionado;
+        if (produtoSelecionado == null){
+            return null;
+        }
+
+        int produtoApagado = jdbcTemplate.queryForObject(APAGA_ID, Integer.class, produtoSelecionado.getId());
+
+        if (produtoApagado == 1){
+            return produtoSelecionado;
+        }
+        //try catch se for maior que 1
+        return null;
+    }
+
+    public Produto alterarPorId(Long id, Produto produtoAlteracoes){
+
+        Produto produtoSelecionado = buscarPorId(id);
+        if (produtoSelecionado != null){
+            String descricaoFinal = (produtoAlteracoes.getDescricao() != null) ? produtoAlteracoes.getDescricao() : produtoSelecionado.getDescricao();
+            String loteFinal = (produtoAlteracoes.getLote() != null) ? produtoAlteracoes.getLote() : produtoSelecionado.getLote();
+            LocalDate dataValidadeFinal = (produtoAlteracoes.getDataValidade() != null) ? produtoAlteracoes.getDataValidade() : produtoSelecionado.getDataValidade();
+            LocalDate dataCriacaoFinal = (produtoAlteracoes.getDataCriacao() != null) ? produtoAlteracoes.getDataCriacao() : produtoSelecionado.getDataCriacao();
+
+
+            jdbcTemplate.update(
+                    ALTERA_POR_ID,
+                    descricaoFinal,
+                    loteFinal,
+                    Date.valueOf(dataValidadeFinal) ,
+                    Date.valueOf(dataCriacaoFinal),
+                    id
+            );
+            Produto produtoFinal = Produto.builder()
+                    .id(id)
+                    .descricao(descricaoFinal)
+                    .lote(loteFinal)
+                    .dataValidade(dataValidadeFinal)
+                    .dataCriacao(dataCriacaoFinal)
+                    .build();
+            return produtoFinal;
+        }
+
+        return null;
     }
 }
 

@@ -31,3 +31,7 @@ build/
 
 ### VS Code ###
 .vscode/
+
+### Exercícios ###
+
+/src/main/java/br.com.salvarani/supermercado/Exercício.md

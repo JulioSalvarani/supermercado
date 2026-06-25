@@ -2,9 +2,9 @@ package br.com.salvarani.supermercado.model.request;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import lombok.Builder;
 
-import java.time.LocalDate;
+@Builder
 
-public record BuscarIDRequest(@NotBlank
-                              Long id) {
+public record BuscarIdRequest(@NotNull Long id) {
 }
