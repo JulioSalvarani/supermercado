@@ -1,7 +1,6 @@
 package br.com.salvarani.supermercado.controller;
 
-import br.com.salvarani.supermercado.exception.ProdutoException;
-import br.com.salvarani.supermercado.model.Produto;
+
 import br.com.salvarani.supermercado.model.request.AlterarProdutoRequest;
 import br.com.salvarani.supermercado.model.request.ApagarIdRequest;
 import br.com.salvarani.supermercado.model.request.BuscarIdRequest;

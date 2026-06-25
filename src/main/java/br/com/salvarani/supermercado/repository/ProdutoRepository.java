@@ -1,7 +1,6 @@
 package br.com.salvarani.supermercado.repository;
 
 import br.com.salvarani.supermercado.model.Produto;
-import lombok.NoArgsConstructor;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
