@@ -98,7 +98,7 @@ public class ProdutoService {
         return null;
     }
 
-    public AlterarProdutoResponse alteraProduto (Long path, AlterarProdutoRequest request) throws Exception {
+    public AlterarProdutoResponse alteraProduto (Long id, AlterarProdutoRequest request) throws Exception {
         try {
             Produto produtoAlteracoes = Produto.builder()
                     .descricao(request.descricao())
@@ -107,7 +107,7 @@ public class ProdutoService {
                     .dataCriacao(request.dataCriacao())
                     .build();
 
-            Produto produtoAtualizado = produtoRepository.alterarPorId(path, produtoAlteracoes);
+            Produto produtoAtualizado = produtoRepository.alterarPorId(id, produtoAlteracoes);
 
             return AlterarProdutoResponse.builder()
                     .id(produtoAtualizado.getId())

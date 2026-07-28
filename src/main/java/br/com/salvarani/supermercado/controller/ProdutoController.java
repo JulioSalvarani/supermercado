@@ -67,10 +67,10 @@ public class ProdutoController {
 
     @PutMapping("/alterar/{path}")
     public ResponseEntity<AlterarProdutoResponse> alterarProduto(
-            @PathVariable Long path,
+            @PathVariable Long id,
             @RequestBody AlterarProdutoRequest request) {
         try{
-            AlterarProdutoResponse response = produtoService.alteraProduto(path, request);
+            AlterarProdutoResponse response = produtoService.alteraProduto(id, request);
             return ResponseEntity.ok(response);
         } catch (Exception e) {
             log.error(e.getMessage());

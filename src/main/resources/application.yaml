@@ -1,3 +1,109 @@
+openapi: 3.0.0
+info:
+  title: api_supermercado
+  description: ''
+  version: 1.0.0
+servers: []
+paths:
+  /produto/:
+    post:
+      tags:
+        - salvarProduto
+      summary: salvarProduto
+      description: 'Salva um novo item através de uma descricao, lote, dataValidade e atribui um id de auto-incremento'
+      operationId: salvarProduto
+      parameters: []
+      responses:
+        '200':
+          description: Successful response
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                descricao: xampu
+                lote: 10lt
+                dataValidade: '2026-12-30'
+    get:
+      tags:
+        - buscarTodos
+      summary: buscarTodos
+      description: 'Busca a lista de todos os itens na base de dados'
+      operationId: buscarTodos
+      parameters: []
+      responses:
+        '200':
+          description: Successful response
+
+  /produto/{id}:
+    get:
+      tags:
+        - buscarPorId
+      summary: buscarPorId
+      description: 'Busca um produto pelo seu id no path'
+      operationId: buscarPorId
+      parameters:
+        - name: id
+          in: path
+          description: ID do item que será buscado
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Successful response
+    put:
+      tags:
+        - alterarProduto
+      summary: alterarProduto
+      description: 'Altera um produto id no path, pode alterar: descricao, lote, dataValidade e dataCriacao'
+      operationId: alterarProduto
+      parameters:
+        - name: id
+          in: path
+          description: ID do item que será buscado
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Successful response
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                descricao: dbv
+                lote: '11111'
+                dataValidade: '2026-12-30'
+                dataCriacao: '2020-12-30'
+  /produto/apagar/{id}:
+    delete:
+      tags:
+        - deletaProduto
+      summary: deletaProduto
+      description: 'Deleta um produto pelo id no path'
+      operationId: deletaProduto
+      parameters:
+        - name: id
+          in: path
+          description: ID do item que será buscado
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Successful response
+components:
+  schemas: {}
+  securitySchemes: {}
+
+
 spring:
   application:
     name: supermercado
