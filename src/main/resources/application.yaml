@@ -1,108 +1,237 @@
 openapi: 3.0.0
+
 info:
-  title: api_supermercado
-  description: ''
+  title: API Supermercado
+  description: API REST para gerenciamento de produtos de um supermercado.
   version: 1.0.0
-servers: []
+
+servers:
+  - url: http://localhost:8080
+    description: Ambiente Local
+
+tags:
+  - name: Produto
+    description: Operações relacionadas aos produtos.
+
 paths:
-  /produto/:
+  /produto:
     post:
       tags:
-        - salvarProduto
-      summary: salvarProduto
-      description: 'Salva um novo item através de uma descricao, lote, dataValidade e atribui um id de auto-incremento'
+        - Produto
+      summary: Cadastrar produto
+      description: Cadastra um novo produto.
       operationId: salvarProduto
-      parameters: []
-      responses:
-        '200':
-          description: Successful response
       requestBody:
+        required: true
         content:
           application/json:
             schema:
-              type: object
-              example:
-                descricao: xampu
-                lote: 10lt
-                dataValidade: '2026-12-30'
+              $ref: '#/components/schemas/ProdutoRequest'
+      responses:
+        '201':
+          description: Produto criado com sucesso.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProdutoResponse'
+
+        '400':
+          $ref: '#/components/responses/BadRequest'
+
     get:
       tags:
-        - buscarTodos
-      summary: buscarTodos
-      description: 'Busca a lista de todos os itens na base de dados'
+        - Produto
+      summary: Listar produtos
+      description: Retorna todos os produtos cadastrados.
       operationId: buscarTodos
-      parameters: []
+
       responses:
         '200':
-          description: Successful response
+          description: Lista de produtos.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ProdutoResponse'
 
   /produto/{id}:
     get:
       tags:
-        - buscarPorId
-      summary: buscarPorId
-      description: 'Busca um produto pelo seu id no path'
+        - Produto
+      summary: Buscar produto por ID
+      description: Retorna um produto pelo seu identificador.
       operationId: buscarPorId
+
       parameters:
-        - name: id
-          in: path
-          description: ID do item que será buscado
-          required: true
-          schema:
-            type: integer
-            format: int64
+        - $ref: '#/components/parameters/IdProduto'
+
       responses:
         '200':
-          description: Successful response
+          description: Produto encontrado.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProdutoResponse'
+
+        '404':
+          $ref: '#/components/responses/NotFound'
+
     put:
       tags:
-        - alterarProduto
-      summary: alterarProduto
-      description: 'Altera um produto id no path, pode alterar: descricao, lote, dataValidade e dataCriacao'
+        - Produto
+      summary: Atualizar produto
+      description: Atualiza os dados de um produto.
       operationId: alterarProduto
+
       parameters:
-        - name: id
-          in: path
-          description: ID do item que será buscado
-          required: true
-          schema:
-            type: integer
-            format: int64
-      responses:
-        '200':
-          description: Successful response
+        - $ref: '#/components/parameters/IdProduto'
+
       requestBody:
+        required: true
         content:
           application/json:
             schema:
-              type: object
-              example:
-                descricao: dbv
-                lote: '11111'
-                dataValidade: '2026-12-30'
-                dataCriacao: '2020-12-30'
-  /produto/apagar/{id}:
-    delete:
-      tags:
-        - deletaProduto
-      summary: deletaProduto
-      description: 'Deleta um produto pelo id no path'
-      operationId: deletaProduto
-      parameters:
-        - name: id
-          in: path
-          description: ID do item que será buscado
-          required: true
-          schema:
-            type: integer
-            format: int64
+              $ref: '#/components/schemas/ProdutoUpdateRequest'
+
       responses:
         '200':
-          description: Successful response
-components:
-  schemas: {}
-  securitySchemes: {}
+          description: Produto atualizado com sucesso.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProdutoResponse'
 
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+    delete:
+      tags:
+        - Produto
+      summary: Excluir produto
+      description: Remove um produto pelo seu identificador.
+      operationId: deletarProduto
+
+      parameters:
+        - $ref: '#/components/parameters/IdProduto'
+
+      responses:
+        '204':
+          description: Produto removido com sucesso.
+
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+components:
+
+  parameters:
+    IdProduto:
+      name: id
+      in: path
+      required: true
+      description: Identificador do produto.
+      schema:
+        type: integer
+        format: int64
+
+  schemas:
+
+    ProdutoRequest:
+      type: object
+      required:
+        - descricao
+        - lote
+        - dataValidade
+      properties:
+        descricao:
+          type: string
+          example: Xampu
+        lote:
+          type: string
+          example: 10LT
+        dataValidade:
+          type: string
+          format: date
+          example: "2026-12-30"
+
+    ProdutoUpdateRequest:
+      type: object
+      required:
+        - descricao
+        - lote
+        - dataValidade
+      properties:
+        descricao:
+          type: string
+          example: Xampu Premium
+        lote:
+          type: string
+          example: 20LT
+        dataValidade:
+          type: string
+          format: date
+          example: "2026-12-30"
+        dataCriacao:
+          type: string
+          format: date
+          example: "2024-01-15"
+
+    ProdutoResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 1
+        descricao:
+          type: string
+          example: Xampu
+        lote:
+          type: string
+          example: 10LT
+        dataCriacao:
+          type: string
+          format: date
+          example: "2024-05-10"
+        dataValidade:
+          type: string
+          format: date
+          example: "2026-12-30"
+
+    ErrorResponse:
+      type: object
+      properties:
+        timestamp:
+          type: string
+          format: date-time
+        status:
+          type: integer
+          example: 404
+        error:
+          type: string
+          example: Not Found
+        message:
+          type: string
+          example: Produto não encontrado.
+        path:
+          type: string
+          example: /produto/1
+
+  responses:
+
+    BadRequest:
+      description: Requisição inválida.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+
+    NotFound:
+      description: Produto não encontrado.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
 
 spring:
   application:
