@@ -10,6 +10,7 @@ import br.com.salvarani.supermercado.model.response.ApagarIdResponse;
 import br.com.salvarani.supermercado.model.response.BuscarIdResponse;
 import br.com.salvarani.supermercado.model.response.BuscarTodosResponse;
 import br.com.salvarani.supermercado.service.ProdutoService;
+import com.ulisesbocchio.jasyptspringboot.annotation.EnableEncryptableProperties;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 @Slf4j
 @RestController
 @RequestMapping("/produto")
+@EnableEncryptableProperties
 public class ProdutoController {
 
     private final ProdutoService produtoService;

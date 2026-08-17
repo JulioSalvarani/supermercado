@@ -35,3 +35,6 @@ build/
 ### Exercícios ###
 
 /src/main/java/br.com.salvarani/supermercado/Exercício.md
+
+# PROPERTIES #
+env.properties
