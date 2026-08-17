@@ -241,6 +241,11 @@ spring:
       include-message: always
   datasource:
     url: jdbc:sqlserver://localhost:1433;databaseName=supermercado;encrypt=true;trustServerCertificate=true
-    username: sa
-    password: Tudonolow25
+    username: DEC(sa)
+    password: ENC(M7H+eX3yXrC7gcvNTNVAoFZ9uA2HpH7ktI623svjxEC4WxSZuLwCdrOg8eg/hr+m)
     driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+    properties.hibernate.dialect: org.hibernate.dialect.SQLServerDialect
